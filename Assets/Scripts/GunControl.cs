@@ -5,25 +5,29 @@ using UnityEngine;
 
 public class GunControl : MonoBehaviour
 {
+    //animations and shit
     [SerializeField] private GameObject gunBarrel;
-    [SerializeField] private GameObject bullet;
-    [SerializeField] private float bulletSpeed;
+    [SerializeField] private GameObject bulletImpact;
     [SerializeField] private float delayBetweenBullets;
     [SerializeField] Animator gunAnimator;
+    
 
-    //still testing 
+    //weapon active info
+    [SerializeField] private float damage;
+    [SerializeField] private int TotalAmmo;
 
-    //still testing
+
     private SpriteRenderer gunSpriteRenderer = null;
     public Sprite[] muzzleflash;
     private bool canShoot;
     
-
+    [SerializeField] private GameObject shootRayFrom; 
     void Start()
     {
-        bulletSpeed = 30f;
+        damage = 1f;
         gunSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
         canShoot = true;
+        TotalAmmo = 100;
     }
 
     void Update()
@@ -35,21 +39,30 @@ public class GunControl : MonoBehaviour
             changeSprite(gunSpriteRenderer, muzzleflash[Random.Range(0,5)]);
             canShoot = false;
         }
-        
     }
 
     void canShootNow(){
         canShoot = true;
         gunAnimator.SetBool("isShooting",false);
+        shootRayFrom.GetComponent<Animator>().SetBool("isShooting",false);
     }
 
     void shoot(){
         gunAnimator.SetBool("isShooting",true);
-        GameObject bulletClone = Instantiate(bullet , gunBarrel.transform.position , gunBarrel.transform.rotation );
-        Destroy(bulletClone,5f);
-        bulletClone.GetComponent<Rigidbody>().AddForce(transform.forward * bulletSpeed , ForceMode.Impulse);
+        shootRayFrom.GetComponent<Animator>().SetBool("isShooting",true);
+        RaycastHit hit;
+        if(Physics.Raycast(shootRayFrom.transform.position , Camera.main.transform.forward , out hit ,Mathf.Infinity)){
+            
+            Debug.Log(hit.collider.tag);
+            if(hit.collider.tag == "Enemy"){
+                hit.collider.gameObject.GetComponent<EnemyTest>().takeDamage(damage);
+            }
+            Instantiate(bulletImpact,hit.point, Quaternion.identity);
+
+        };
+        
         Invoke("canShootNow" , delayBetweenBullets);
-        GetComponent<AudioSource>().Play();
+        //GetComponent<AudioSource>().Play();
     }
 
 
