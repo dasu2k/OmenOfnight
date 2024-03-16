@@ -10,6 +10,10 @@ public class GunControl : MonoBehaviour
     [SerializeField] private GameObject bulletImpact;
     [SerializeField] private float delayBetweenBullets;
     [SerializeField] Animator gunAnimator;
+
+
+
+
     
 
     //weapon active info
@@ -51,7 +55,7 @@ public class GunControl : MonoBehaviour
         gunAnimator.SetBool("isShooting",true);
         shootRayFrom.GetComponent<Animator>().SetBool("isShooting",true);
         RaycastHit hit;
-        if(Physics.Raycast(shootRayFrom.transform.position , Camera.main.transform.forward , out hit ,Mathf.Infinity)){
+        if(Physics.Raycast(gunBarrel.transform.position , Camera.main.transform.forward , out hit ,Mathf.Infinity)){
             
             Debug.Log(hit.collider.tag);
             if(hit.collider.tag == "Enemy"){
