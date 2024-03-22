@@ -11,9 +11,8 @@ public class GunControl : MonoBehaviour
     [SerializeField] private float delayBetweenBullets;
     [SerializeField] Animator gunAnimator;
     [SerializeField] private GameObject playerView;
-
     private SpriteRenderer gunSpriteRenderer = null;
-    public Sprite[] muzzleflash;
+    
     private bool canShoot;
     //end
 
@@ -37,6 +36,13 @@ public class GunControl : MonoBehaviour
     [SerializeField] private GameObject shootRayFrom; 
     
     //end 
+
+
+
+
+    //still testing
+    [SerializeField] private GameObject muzzleFlashObj;
+    //end
 
     void Start()
     {
@@ -62,7 +68,8 @@ public class GunControl : MonoBehaviour
             }
             shoot();
             //muzzle flash
-            changeSprite(gunSpriteRenderer, muzzleflash[Random.Range(0,5)]);
+    
+            Instantiate(muzzleFlashObj , gunBarrel.transform.position, gunBarrel.transform.rotation);
             canShoot = false;
         }
         else{
@@ -112,11 +119,6 @@ public class GunControl : MonoBehaviour
     }
 
 
-    void removeMuzzleFlash(){
-        gunSpriteRenderer.sprite = null;
-    }
-    void changeSprite(SpriteRenderer spriteRenderer , Sprite sprite){
-        spriteRenderer.sprite = sprite;
-        Invoke("removeMuzzleFlash", 0.1f);
-    }
+    
+    
 }
