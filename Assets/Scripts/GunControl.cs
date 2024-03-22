@@ -98,7 +98,7 @@ public class GunControl : MonoBehaviour
         gunAnimator.SetBool("isShooting",true);
         playerView.GetComponent<Animator>().SetBool("isShooting",true);
         RaycastHit hit;
-        if(Physics.Raycast(shootRayFrom.transform.position , Camera.main.transform.forward , out hit ,Mathf.Infinity)){
+        if(Physics.Raycast(shootRayFrom.transform.position , Camera.main.transform.forward+new Vector3(Random.Range(0.03f,-0.03f),Random.Range(0.02f,-0.02f),0f) , out hit ,Mathf.Infinity)){
             Debug.Log(hit.collider.tag);
             if(hit.collider.tag == "Enemy"){
                 hit.collider.gameObject.GetComponent<EnemyTest>().takeDamage(damage);
