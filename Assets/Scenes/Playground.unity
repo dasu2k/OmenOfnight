@@ -1406,7 +1406,7 @@ MonoBehaviour:
   ammoUiElement: {fileID: 934437076}
   messageUiElement: {fileID: 239814335}
   shootRayFrom: {fileID: 812125071}
-  canHoldDownShoot: 0
+  canHoldDownShoot: 1
   magSize: 30
   damage: 3
   reloadingTime: 0.7
@@ -1698,13 +1698,13 @@ MonoBehaviour:
   gunAnimator: {fileID: 4952727159426112}
   playerView: {fileID: 5411240778597748013}
   TotalAmmo: 3545
-  ammoUiElement: {fileID: 0}
-  messageUiElement: {fileID: 0}
+  ammoUiElement: {fileID: 934437076}
+  messageUiElement: {fileID: 239814335}
   shootRayFrom: {fileID: 812125071}
   canHoldDownShoot: 0
   magSize: 12
-  damage: 12
-  reloadingTime: 0
+  damage: 1
+  reloadingTime: 0.6
   muzzleFlashObj: {fileID: 199458, guid: 7b6a7e40bd9ccc0489274923930761c7, type: 3}
   HUD: {fileID: 0}
 --- !u!1 &1454245228
@@ -2317,7 +2317,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1765096496670644}
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.008086923, z: -0.1423}
+  m_LocalPosition: {x: 0, y: 0.008086923, z: -0.1423}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2331,8 +2331,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1694449535659050}
-  m_LocalRotation: {x: -0, y: -0.9971944, z: -0, w: -0.07485554}
-  m_LocalPosition: {x: 0.5678, y: -0.1469, z: 0.6031}
+  m_LocalRotation: {x: 0.00009055636, y: -0.99789137, z: 0.04359414, w: -0.048086386}
+  m_LocalPosition: {x: 0.62, y: -0.136, z: 0.589}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2340,7 +2340,7 @@ Transform:
   - {fileID: 781030972}
   m_Father: {fileID: 391383102}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: -188.586, z: 0}
+  m_LocalEulerAnglesHint: {x: 4.991, y: -185.529, z: -0.252}
 --- !u!95 &4952727159426112
 Animator:
   serializedVersion: 5
@@ -2351,7 +2351,7 @@ Animator:
   m_GameObject: {fileID: 1694449535659050}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3f161c29fd954244aaf54d6c171e3a28, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

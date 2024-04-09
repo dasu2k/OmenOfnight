@@ -12,8 +12,8 @@ public class GunControl : MonoBehaviour
     [SerializeField] private float delayBetweenBullets;
     [SerializeField] Animator gunAnimator;
     [SerializeField] private GameObject playerView;
-
     private bool canShoot;
+
     //end
 
     
@@ -42,7 +42,6 @@ public class GunControl : MonoBehaviour
     [SerializeField] private float damage;
     [SerializeField] private float reloadingTime;
     [SerializeField] private GameObject muzzleFlashObj;
-
     //end 
 
 
@@ -55,18 +54,11 @@ public class GunControl : MonoBehaviour
     {
         canShoot = true;
         ammoInMag = magSize;
-
-        //testing 
+       
     }
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.R))
-        {
-            canShoot = false;
-            reload();
-        }
-
-
+        //taking in the fire input
         bool fireInput;
         if(canHoldDownShoot)
         {
@@ -76,6 +68,15 @@ public class GunControl : MonoBehaviour
             fireInput = Input.GetMouseButtonDown(0);
         }
 
+        
+        if(Input.GetKeyDown(KeyCode.R) && canShoot)
+        {
+           
+                reload();
+        }
+
+
+        
 
         // if the shoot input is there , gun is free to shoot another bullet and there is atleast 1 ammo either in the mag or in storage go ahead 
         if(fireInput && canShoot && (TotalAmmo+ammoInMag > 0)){
@@ -97,17 +98,14 @@ public class GunControl : MonoBehaviour
             Debug.Log("no ammo left");
         }
 
-        Debug.Log("Ammo in mag" + ammoInMag);
+        //Debug.Log("Ammo in mag" + ammoInMag);
     }
 
     void reload(){
+        canShoot = false;
         gunAnimator.SetBool("isReloading",true);
-        
         playerView.GetComponent<Animator>().SetBool("isShooting",false);
-
-        
         messageUiElement.text = "Reloading";
-
         Invoke("reloadComplete" , reloadingTime);
     }
 
@@ -117,7 +115,7 @@ public class GunControl : MonoBehaviour
             ammoInMag = magSize;
         }
         else{
-            ammoInMag = TotalAmmo;
+            ammoInMag += TotalAmmo;
             TotalAmmo = 0;
         }
         messageUiElement.text = "";
@@ -135,10 +133,9 @@ public class GunControl : MonoBehaviour
     void shoot(){
         canShoot = false;
         gunAnimator.SetBool("isShooting",true);
-        playerView.GetComponent<Animator>().SetBool("isShooting",true);
+        //playerView.GetComponent<Animator>().SetBool("isShooting",true);
         RaycastHit hit;
         if(Physics.Raycast(shootRayFrom.transform.position , Camera.main.transform.forward+new Vector3(Random.Range(0.03f,-0.03f),Random.Range(0.02f,-0.02f),0f) , out hit ,Mathf.Infinity)){
-            Debug.Log(hit.collider.tag);
             if(hit.collider.tag == "Enemy"){
                 hit.collider.gameObject.GetComponent<EnemyTest>().takeDamage(damage);
             }
