@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Xml.Serialization;
 using UnityEngine;
 using TMPro;
+using JetBrains.Annotations;
 public class GunControl : MonoBehaviour
 {
     //animations and shit
@@ -11,66 +12,86 @@ public class GunControl : MonoBehaviour
     [SerializeField] private float delayBetweenBullets;
     [SerializeField] Animator gunAnimator;
     [SerializeField] private GameObject playerView;
-    private SpriteRenderer gunSpriteRenderer = null;
-    
+
     private bool canShoot;
     //end
 
     
 
     //weapon active info
-    [SerializeField] private float damage;
+    
     [SerializeField] private int TotalAmmo;
     private int ammoInMag;
-    [SerializeField] private int magSize;
+    
     //end
 
     
 
     //User interface shit
-    [SerializeField] private TMP_Text ammo;
+    [SerializeField] private TMP_Text ammoUiElement;
+    [SerializeField] private TMP_Text messageUiElement;
     //end
+    
     
 
     //mechanics
+    [Header("mechanism of the gun")]
     [SerializeField] private GameObject shootRayFrom; 
-    
+    [SerializeField] private bool canHoldDownShoot;
+    [SerializeField] private int magSize;
+    [SerializeField] private float damage;
+    [SerializeField] private float reloadingTime;
+    [SerializeField] private GameObject muzzleFlashObj;
+
     //end 
 
 
-
-
     //still testing
-    [SerializeField] private GameObject muzzleFlashObj;
+    [Header("testing shit")]
+    public GameObject HUD;
     //end
 
     void Start()
     {
-        damage = 1f;
-        gunSpriteRenderer = GetComponentInChildren<SpriteRenderer>();
         canShoot = true;
         ammoInMag = magSize;
 
+        //testing 
     }
-
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.R))
         {
+            canShoot = false;
             reload();
         }
-        if(Input.GetMouseButton(0) && canShoot && (TotalAmmo+ammoInMag > 0)){
-            //shoot a bullet
+
+
+        bool fireInput;
+        if(canHoldDownShoot)
+        {
+            fireInput = Input.GetMouseButton(0);
+        }
+        else{
+            fireInput = Input.GetMouseButtonDown(0);
+        }
+
+
+        // if the shoot input is there , gun is free to shoot another bullet and there is atleast 1 ammo either in the mag or in storage go ahead 
+        if(fireInput && canShoot && (TotalAmmo+ammoInMag > 0)){
+            //if there is no ammo in the magazine do a reload
             if(ammoInMag <= 0)
             {
                 reload();
-                ammo.text = ammoInMag + "/" + TotalAmmo; 
             }
-            shoot();
+            //else just shoot a bullet
+            else{
+                shoot();
+            }
+           
             //muzzle flash
-    
             Instantiate(muzzleFlashObj , gunBarrel.transform.position, gunBarrel.transform.rotation);
-            canShoot = false;
+            
         }
         else{
             Debug.Log("no ammo left");
@@ -81,6 +102,16 @@ public class GunControl : MonoBehaviour
 
     void reload(){
         gunAnimator.SetBool("isReloading",true);
+        
+        playerView.GetComponent<Animator>().SetBool("isShooting",false);
+
+        
+        messageUiElement.text = "Reloading";
+
+        Invoke("reloadComplete" , reloadingTime);
+    }
+
+    void reloadComplete(){
         if(TotalAmmo >= magSize){
             TotalAmmo-= magSize-ammoInMag;
             ammoInMag = magSize;
@@ -89,12 +120,12 @@ public class GunControl : MonoBehaviour
             ammoInMag = TotalAmmo;
             TotalAmmo = 0;
         }
-        ammo.text = ammoInMag + "/" + TotalAmmo;
-        Invoke("reloadComplete" , 0.7f);
-    }
-    void reloadComplete(){
+        messageUiElement.text = "";
+        canShoot = true;
+        ammoUiElement.text = ammoInMag + "/" + TotalAmmo;
         gunAnimator.SetBool("isReloading",false);
     }
+
     void canShootNow(){
         canShoot = true;
         gunAnimator.SetBool("isShooting",false);
@@ -102,6 +133,7 @@ public class GunControl : MonoBehaviour
     }
 
     void shoot(){
+        canShoot = false;
         gunAnimator.SetBool("isShooting",true);
         playerView.GetComponent<Animator>().SetBool("isShooting",true);
         RaycastHit hit;
@@ -113,12 +145,10 @@ public class GunControl : MonoBehaviour
             Instantiate(bulletImpact,hit.point, Quaternion.identity);
         };
         ammoInMag--;
-        ammo.text = ammoInMag + "/" + TotalAmmo;
+        ammoUiElement.text = ammoInMag + "/" + TotalAmmo;
         Invoke("canShootNow" , delayBetweenBullets);
         //GetComponent<AudioSource>().Play();
     }
 
-
-    
     
 }
