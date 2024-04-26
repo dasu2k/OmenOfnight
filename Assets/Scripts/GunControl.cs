@@ -95,7 +95,7 @@ public class GunControl : MonoBehaviour
             
         }
         else{
-            Debug.Log("no ammo left");
+            //Debug.Log("no ammo left");
         }
 
         //Debug.Log("Ammo in mag" + ammoInMag);
