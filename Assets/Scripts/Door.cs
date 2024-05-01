@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Door : MonoBehaviour
 {
-    [SerializeField]bool rotateInwards;
     GameObject player;
     float playerDistance;
     // Start is called before the first frame update
@@ -19,15 +18,18 @@ public class Door : MonoBehaviour
     void Update()
     {
         playerDistance = Vector3.Distance(transform.position,player.transform.position);
-        if(playerDistance > 4)
+        if(playerDistance < 4)
         {
             if(Input.GetKeyDown(KeyCode.F))
             {
                 if(!open){
+                    Debug.Log("trying to open door");
                     transform.Rotate(new Vector3(0f,90f,0f));
+                    open = true;
                 }
                 else{
-                    transform.Rotate(new Vector3(0f,0f,0f));
+                    transform.Rotate(new Vector3(0f,-90f,0f));
+                    open = false;
                 }
             }
         }

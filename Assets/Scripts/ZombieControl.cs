@@ -7,7 +7,7 @@ public class ZombieControl : MonoBehaviour
 {
     private float distanceFromPlayer;
     private GameObject player;
-    Animator animator;
+    public Animator animator;
     [SerializeField] private float spottingRange;
     [SerializeField] private float attackRange;
     [SerializeField] private float runningSpeed;
@@ -15,7 +15,7 @@ public class ZombieControl : MonoBehaviour
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        animator= GetComponent<Animator>();
+        animator= GetComponentInChildren<Animator>();
     }
 
     void Update()
@@ -32,14 +32,12 @@ public class ZombieControl : MonoBehaviour
                 animator.SetBool("running",false);
             }
 
-            else if(distanceFromPlayer < spottingRange)
+            else if(distanceFromPlayer < spottingRange && !animator.GetBool("attacking"))
             {
                 //run towards them
                 Debug.Log("running towards player");
-                transform.LookAt(player.transform.position);
-                transform.Translate(Vector3.forward * Time.deltaTime  * runningSpeed);
-
-
+                //transform.LookAt(player.transform.position);
+                //transform.Translate(Vector3.forward * Time.deltaTime  * runningSpeed);
 
                 animator.SetBool("attacking",false);
                 animator.SetBool("idle",false);

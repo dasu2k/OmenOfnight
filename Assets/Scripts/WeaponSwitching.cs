@@ -1,8 +1,6 @@
 using UnityEngine.UI;
-using Microsoft.Unity.VisualStudio.Editor;
-
 using UnityEngine;
-using Unity.VisualScripting;
+
 
 public class WeaponSwitching : MonoBehaviour
 {

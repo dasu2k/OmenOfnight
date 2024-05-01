@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Unity.VisualScripting;
+using UnityEngine;
 #if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 using UnityEngine.InputSystem;
 #endif
@@ -137,8 +138,19 @@ namespace StarterAssets
 				//Don't multiply mouse input by Time.deltaTime
 				float deltaTimeMultiplier = IsCurrentDeviceMouse ? 1.0f : Time.deltaTime;
 				
-				_cinemachineTargetPitch += _input.look.y * RotationSpeed * deltaTimeMultiplier;
-				_rotationVelocity = _input.look.x * RotationSpeed * deltaTimeMultiplier;
+				
+
+				GameObject player = GameObject.FindGameObjectWithTag("Player");
+				
+				if(player.GetComponent<PlayerStats>().isInverted){
+					_cinemachineTargetPitch += -_input.look.y * RotationSpeed * deltaTimeMultiplier;
+					_rotationVelocity = -_input.look.x * RotationSpeed * deltaTimeMultiplier;
+				}
+				else
+				{
+					_cinemachineTargetPitch += _input.look.y * RotationSpeed * deltaTimeMultiplier;
+					_rotationVelocity = _input.look.x * RotationSpeed * deltaTimeMultiplier;
+				}
 
 				// clamp our pitch rotation
 				_cinemachineTargetPitch = ClampAngle(_cinemachineTargetPitch, BottomClamp, TopClamp);
