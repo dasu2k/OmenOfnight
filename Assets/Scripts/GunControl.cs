@@ -2,9 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
 using UnityEngine;
-using TMPro;
-using JetBrains.Annotations;
-public class GunControl : MonoBehaviour
+using TMPro;public class GunControl : MonoBehaviour
 {
     //animations and shit
     [SerializeField] private GameObject gunBarrel;
@@ -144,7 +142,7 @@ public class GunControl : MonoBehaviour
         ammoInMag--;
         ammoUiElement.text = ammoInMag + "/" + TotalAmmo;
         Invoke("canShootNow" , delayBetweenBullets);
-        //GetComponent<AudioSource>().Play();
+        GetComponent<AudioSource>().Play();
     }
 
     
